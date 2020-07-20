@@ -7,6 +7,7 @@ exports.up = function(knex) {
         table.string('whatsapp').notNullable();
         table.string('cidade').notNullable();
         table.string('estado',2).notNullable();
+        table.string('tipo').notNullable();
     });
 };
 

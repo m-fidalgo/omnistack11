@@ -3,7 +3,7 @@ const generateUniqueId = require('../utils/generateUniqueId')
 
 module.exports = {
     async create(request, response){
-        const {nome, email, whatsapp, cidade, estado} = request.body;
+        const {nome, email, whatsapp, cidade, estado, tipo} = request.body;
 
         const id = generateUniqueId();
 
@@ -13,8 +13,9 @@ module.exports = {
             email,
             whatsapp,
             cidade,
-            estado
-        })
+            estado,
+            tipo
+        });
 
         return response.json({ id });
     },

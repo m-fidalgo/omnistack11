@@ -9,6 +9,7 @@ import Incidents from './pages/Incidents';
 import Details from './pages/Details';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
+import Ong from './pages/Ong';
 
 export default function Routes(){
     return(
@@ -18,6 +19,7 @@ export default function Routes(){
                 <AppStack.Screen name="Incidents" component={Incidents} />
                 <AppStack.Screen name="Details" component={Details} />
                 <AppStack.Screen name="Cadastro" component={Cadastro} />
+                <AppStack.Screen name="Ong" component={Ong} />
             </AppStack.Navigator>
         </NavigationContainer>
     );

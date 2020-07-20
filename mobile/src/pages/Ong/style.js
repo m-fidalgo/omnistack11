@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 import Constants from 'expo-constants';
 
 export default StyleSheet.create({
@@ -16,48 +16,24 @@ export default StyleSheet.create({
 
     headerRight: {
         flexDirection: 'row',
-        alignItems: 'center',
     },
 
-    headerText: {
-        fontSize: 15,
-        color: '#737380',
-    },
-
-    headerTextBold: {
-        fontWeight: 'bold',
-    },
-
-    titleBox: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 16,
-        marginTop: 48,
-    },
-    
     title: {
         fontSize: 30,
         color: '#13131a',
         fontWeight: 'bold',
-    },
-
-    filtro: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-
-    filtroText: {
-        color: '#e02041',
-        fontSize: 15,
-        fontWeight: 'bold',
-        marginRight: 24,
+        marginBottom: 16,
+        marginTop: 48,
     },
 
     desc: {
         fontSize: 16,
         lineHeight: 24,
         color: '#737380',
+    },
+
+    descBold: {
+        fontWeight: 'bold',
     },
 
     list: {
@@ -95,4 +71,5 @@ export default StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
     }
-});
+
+})

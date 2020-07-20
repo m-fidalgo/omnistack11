@@ -18,6 +18,7 @@ const { min } = require('./database/connection');
             whatsapp: Joi.string().required().min(10).max(11),
             cidade: Joi.string().required(),
             estado: Joi.string().required().length(2),
+            tipo: Joi.string().required(),
         })
     }), ongController.create);
 

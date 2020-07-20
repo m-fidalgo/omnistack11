@@ -15,7 +15,6 @@ export default function Profile(){
     const history = useHistory();
 
     useEffect(() => {
-        //pega todos os incidentes mas a rota é profile????
         api.get('/perfil',{
             headers:{
                 auth: ongId,

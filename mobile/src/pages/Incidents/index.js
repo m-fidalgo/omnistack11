@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {View, Image, Text, TouchableOpacity, FlatList} from 'react-native';
+import {View, Image, Text, TouchableOpacity, FlatList, Alert, AsyncStorage} from 'react-native';
 import style from './style';
 import api from '../../services/api';
 
@@ -14,6 +14,24 @@ export default function Incidents(){
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const navigation = useNavigation();
+    const [tipo, setTipo] = useState('t');
+
+    /*async function getItem() {
+        return await AsyncStorage.getItem('tipo')
+            .then((result) => {
+                if (result) {
+                    setTipo(result);
+                }
+                else{
+                    setTipo('t');
+                }
+                return tipo;
+            });
+    }
+
+    async function setItem() {
+        return await AsyncStorage.setItem('tipo', JSON.stringify(tipo));
+    }*/
 
     function navigateToDetail(caso){
         navigation.navigate('Details', {caso});
@@ -21,6 +39,80 @@ export default function Incidents(){
 
     function navigateToLogin(){
         navigation.navigate('Login');
+    }
+
+    function navigateToOng(caso){
+        navigation.navigate('Ong',{caso});
+    }
+
+    function openFiltro(){
+        Alert.alert(
+            'Selecione o tipo de ONG',
+            '',
+            [
+                {text: 'Todos', onPress: () => loadT()},
+                {text: 'Animais', onPress: () => loadA()},
+                {text: 'Direitos Humanos', onPress:() => loadD()},
+                {text: 'Meio Ambiente', onPress: () => loadM()},
+            ],
+            { cancelable: false }
+        );
+    }
+
+    async function loadT(){
+        setTipo('t')
+        await api.get('casos',{
+            headers:{
+                type: 't',
+            },
+            params: {page: 1}
+        }).then(resp => {
+            setCasos(resp.data);
+            setTotal(resp.headers['x-total-count']);
+            setPage(2);
+           })
+    }
+
+    async function loadA(){
+        setTipo('a')
+        await api.get('casos',{
+            headers:{
+                type: 'a',
+            },
+            params: {page: 1}
+        }).then(resp => {
+            setCasos(resp.data);
+            setTotal(resp.headers['x-total-count']);
+            setPage(2);
+           })
+    }
+
+    async function loadD(){
+        setTipo('d')
+        await api.get('casos',{
+            headers:{
+                type: 'd',
+            },
+            params: {page: 1}
+        }).then(resp => {
+            setCasos(resp.data);
+            setTotal(resp.headers['x-total-count']);
+            setPage(2);
+           })
+    }
+
+    async function loadM(){
+        setTipo('m')
+        await api.get('casos',{
+            headers:{
+                type: 'm',
+            },
+            params: {page: 1}
+        }).then(resp => {
+            setCasos(resp.data);
+            setTotal(resp.headers['x-total-count']);
+            setPage(2);
+           })
     }
 
     async function loadIncidents(){
@@ -35,7 +127,10 @@ export default function Incidents(){
         setLoading(true);
 
         const resp = await api.get('casos',{
-            params: {page}
+            params: {page},
+            headers: {
+                type: tipo
+            }
         });
 
         setCasos([... casos, ...resp.data]);
@@ -66,7 +161,15 @@ export default function Incidents(){
                 
             </View>
 
-            <Text style={style.title}>Bem vindo(a)</Text>
+            <View style={style.titleBox}>
+                <Text style={style.title}>Bem vindo(a)</Text>
+
+                <TouchableOpacity style={style.filtro} onPress={() => openFiltro()}>
+                    <Text style={style.filtroText}>Filtrar</Text>
+                    <Feather name="filter" size={16} color="#e02041" />
+                </TouchableOpacity>
+            </View>
+            
             <Text style={style.desc}>Escolha um dos casos abaixo e salve o dia</Text>
 
             <FlatList
@@ -78,8 +181,13 @@ export default function Incidents(){
                 onEndReachedThreshold={0.2}
                 renderItem={({item: caso}) => (
                     <View style={style.incident}>
-                        <Text style={style.incidentProperty}>ONG:</Text>
-                        <Text style={style.incidentValue}>{caso.nome}</Text>
+                        <TouchableOpacity onPress={() => navigateToOng(caso)}>
+                            <Text style={style.incidentProperty}>ONG:</Text>
+                            <Text style={style.incidentValue}>{caso.nome}</Text>
+                        </TouchableOpacity>
+
+                        <Text style={style.incidentProperty}>TIPO:</Text>
+                        <Text style={style.incidentValue}>{caso.tipo}</Text>
 
                         <Text style={style.incidentProperty}>CASO:</Text>
                         <Text style={style.incidentValue}>{caso.titulo}</Text>

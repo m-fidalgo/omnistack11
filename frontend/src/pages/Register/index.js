@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
+import {MenuItem, Select, FormControl, makeStyles} from '@material-ui/core';
 import api from '../../services/api';
 import './style.css';
 
@@ -7,12 +8,39 @@ import './style.css';
 import imgLogo from '../../assets/logo.svg';
 import {FiArrowLeft} from 'react-icons/fi';
 
-export default function Register(){
+const useStyles = makeStyles((theme) => ({
+    rootFormControl: {
+        justifyContent: 'center',
+        boxSizing: 'border-box',
+        width: '100%',
+        height: 60,
+        borderRadius: 8,
+        backgroundColor: '#fff',
+        border: '3px solid #dcdce6',
+        color: '#333',
+        padding: '0 24px',
+        '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
+            outline: 'none',
+        },
+    },
+    rootSelect: {
+        font: '400 18px Roboto, sans-serif',
+        '&:focus': {
+            backgroundColor: '#fff',
+        },
+    },
+  }));
+
+
+export default function Register(){   
+    const classes = useStyles();
+
     const[nome, setNome] = useState('');
     const[email, setEmail] = useState('');
     const[whatsapp, setWhatsapp] = useState('');
     const[cidade, setCidade] = useState('');
     const[estado, setEstado] = useState('');
+    const[tipo, setTipo] = useState('');
 
     const history = useHistory();
 
@@ -35,32 +63,39 @@ export default function Register(){
                         alert(`Insira sua cidade`);
                     }
                     else{
-                        if(estado == ''){
+                        if(estado === ''){
                             alert(`Insira seu estado`);
                         }
                         else{
-                            const data = {
-                                nome,
-                                email,
-                                whatsapp,
-                                cidade,
-                                estado
-                            };
-                    
-                            try{
-                                const resp = await api.post('ongs',data);
-                            
-                                alert(`Seu ID de acesso: ${resp.data.id}`);    
-                                
-                                history.push('/');
+                            if(tipo === ''){
+                                alert(`Selecione o tipo da ONG`);
                             }
-                            catch(err){
-                                setNome('');
-                                setEmail('');
-                                setWhatsapp('');
-                                setCidade('');
-                                setEstado('');
-                                alert(`Erro no cadastro, tente novamente`);
+                            else{
+                                const data = {
+                                    nome,
+                                    email,
+                                    whatsapp,
+                                    cidade,
+                                    estado,
+                                    tipo
+                                };
+                        
+                                try{
+                                    const resp = await api.post('ongs',data);
+                                
+                                    alert(`Seu ID de acesso: ${resp.data.id}`);    
+                                    
+                                    history.push('/');
+                                }
+                                catch(err){
+                                    setNome('');
+                                    setEmail('');
+                                    setWhatsapp('');
+                                    setCidade('');
+                                    setEstado('');
+                                    setTipo('');
+                                    alert(`Erro no cadastro, tente novamente`);
+                                }
                             }
                         }
                     }
@@ -95,6 +130,21 @@ export default function Register(){
                         <input placeholder="UF" style={{width: 80}} value={estado} onChange={e => setEstado(e.target.value)} /> 
                     </div>
 
+                    <FormControl classes={{root: classes.rootFormControl}} >
+                        <Select
+                            value={tipo}
+                            onChange={e => setTipo(e.target.value)}
+                            displayEmpty
+                            classes={{root: classes.rootSelect}}
+                            disableUnderline
+                        >
+                            <MenuItem value="" disabled>Selecione o tipo da ONG</MenuItem>
+                            <MenuItem value={'Animais'}>Animais</MenuItem>
+                            <MenuItem value={'Direitos Humanos'}>Direitos Humanos</MenuItem>
+                            <MenuItem value={'Meio Ambiente'}>Meio Ambiente</MenuItem>
+                        </Select>
+                    </FormControl>
+                    
                     <button className="button" type="submit">Cadastrar</button>
                 </form>
             </div>

@@ -23,7 +23,8 @@ describe('ONGs', () => {
                 email: "a@gmail.com",
                 whatsapp: "12912341234",
                 cidade: "sjc",
-                estado: "SP"
+                estado: "SP",
+                tipo: "a"
             });
         
         expect(response.status).toBe(200);
@@ -40,7 +41,8 @@ describe('ONGs', () => {
             email: "a@gmail.com",
             whatsapp: "12912341234",
             cidade: "sjc",
-            estado: "SP"
+            estado: "SP",
+            tipo: "a"
         }];
 
         expect(response.status).toBe(200);
@@ -84,7 +86,8 @@ describe('ONGs', () => {
                 email: "a@gmail.com",
                 whatsapp: "12912341234",
                 cidade: "sjc",
-                estado: "SP"
+                estado: "SP",
+                tipo: "a"
             }];
 
             expect(response.status).toBe(200);
