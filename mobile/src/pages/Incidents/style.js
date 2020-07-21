@@ -84,6 +84,13 @@ export default StyleSheet.create({
         color: '#737380',
     },
 
+    incidentValueRed: {
+        marginTop: 8,
+        fontSize: 15,
+        marginBottom: 24,
+        color: '#e02041',
+    },
+
     detailsBtn: {
         flexDirection: 'row',
         justifyContent: 'space-between',

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, Image, TouchableOpacity, TextInput, AsyncStorage} from 'react-native';
 import style from './style';
 import api from '../../services/api';
 

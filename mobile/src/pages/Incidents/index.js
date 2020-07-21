@@ -183,7 +183,7 @@ export default function Incidents(){
                     <View style={style.incident}>
                         <TouchableOpacity onPress={() => navigateToOng(caso)}>
                             <Text style={style.incidentProperty}>ONG:</Text>
-                            <Text style={style.incidentValue}>{caso.nome}</Text>
+                            <Text style={style.incidentValueRed}>{caso.nome}</Text>
                         </TouchableOpacity>
 
                         <Text style={style.incidentProperty}>TIPO:</Text>

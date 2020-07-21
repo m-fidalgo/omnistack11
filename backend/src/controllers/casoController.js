@@ -20,85 +20,8 @@ module.exports = {
         const { page = 1} = request.query;
         const [count] = await connection('casos').count();
         const type = request.headers.type;
-
-        if(type === 'a')
-        {
-            const casos = await connection('casos')
-                .join('ongs','ongs.id','=','casos.ongs_id')
-                .limit(5)
-                .offset((page - 1)*5)
-                .select([
-                    'casos.*',
-                    'ongs.nome',
-                    'ongs.email',
-                    'ongs.whatsapp',
-                    'ongs.cidade',
-                    'ongs.estado',
-                    'ongs.tipo'
-                ])
-                .where('ongs.tipo','Animais');
-            
-                const total = await connection('casos')
-                .count('casos.id')
-                .join('ongs','ongs.id','=','casos.ongs_id')
-                .groupBy('casos.id')
-                .having('ongs.tipo','=','Animais');
-
-            response.header('X-Total-Count',total.length);
-            return response.json(casos);
-        }
-        if(type === 'd')
-        {
-            const casos = await connection('casos')
-                .join('ongs','ongs.id','=','casos.ongs_id')
-                .limit(5)
-                .offset((page - 1)*5)
-                .select([
-                    'casos.*',
-                    'ongs.nome',
-                    'ongs.email',
-                    'ongs.whatsapp',
-                    'ongs.cidade',
-                    'ongs.estado',
-                    'ongs.tipo'
-                ])
-                .where('ongs.tipo','Direitos Humanos');
-            
-                const total = await connection('casos')
-                .count('casos.id')
-                .join('ongs','ongs.id','=','casos.ongs_id')
-                .groupBy('casos.id')
-                .having('ongs.tipo','=','Direitos Humanos');
-
-            response.header('X-Total-Count',total.length);
-            return response.json(casos);
-        }
-        if(type === 'm')
-        {
-            const casos = await connection('casos')
-                .join('ongs','ongs.id','=','casos.ongs_id')
-                .limit(5)
-                .offset((page - 1)*5)
-                .select([
-                    'casos.*',
-                    'ongs.nome',
-                    'ongs.email',
-                    'ongs.whatsapp',
-                    'ongs.cidade',
-                    'ongs.estado',
-                    'ongs.tipo'
-                ])
-                .where('ongs.tipo','Meio Ambiente');
-            
-            const total = await connection('casos')
-                .count('casos.id')
-                .join('ongs','ongs.id','=','casos.ongs_id')
-                .groupBy('casos.id')
-                .having('ongs.tipo','=','Meio Ambiente');
-
-            response.header('X-Total-Count',total.length);
-            return response.json(casos);
-        }
+        let typeFull = '';
+        
         if(type === 't')
         {
             const casos = await connection('casos')
@@ -113,12 +36,41 @@ module.exports = {
                     'ongs.cidade',
                     'ongs.estado',
                     'ongs.tipo'
-                ])
-                .where('ongs.tipo','Animais')
-                .orWhere('ongs.tipo','Direitos Humanos')
-                .orWhere('ongs.tipo','Meio Ambiente');
+                ]);
 
             response.header('X-Total-Count',count['count(*)']);
+            return response.json(casos);
+        }
+        else{
+            if(type === 'a')
+                typeFull = 'Animais';
+            if(type === 'd')
+                typeFull = 'Direitos Humanos';
+            if(type === 'm')
+                typeFull = 'Meio Ambiente';
+            
+                const casos = await connection('casos')
+                .join('ongs','ongs.id','=','casos.ongs_id')
+                .limit(5)
+                .offset((page - 1)*5)
+                .select([
+                    'casos.*',
+                    'ongs.nome',
+                    'ongs.email',
+                    'ongs.whatsapp',
+                    'ongs.cidade',
+                    'ongs.estado',
+                    'ongs.tipo'
+                ])
+                .where('ongs.tipo',typeFull);
+            
+            const total = await connection('casos')
+                .count('casos.id')
+                .join('ongs','ongs.id','=','casos.ongs_id')
+                .groupBy('casos.id')
+                .having('ongs.tipo','=',typeFull);
+
+            response.header('X-Total-Count',total.length);
             return response.json(casos);
         }
     },
