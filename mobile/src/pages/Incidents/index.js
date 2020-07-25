@@ -12,26 +12,9 @@ export default function Incidents(){
     const [casos, setCasos] = useState([]);
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
+    const [tipo, setTipo] = useState('t');
     const [loading, setLoading] = useState(false);
     const navigation = useNavigation();
-    const [tipo, setTipo] = useState('t');
-
-    /*async function getItem() {
-        return await AsyncStorage.getItem('tipo')
-            .then((result) => {
-                if (result) {
-                    setTipo(result);
-                }
-                else{
-                    setTipo('t');
-                }
-                return tipo;
-            });
-    }
-
-    async function setItem() {
-        return await AsyncStorage.setItem('tipo', JSON.stringify(tipo));
-    }*/
 
     function navigateToDetail(caso){
         navigation.navigate('Details', {caso});
@@ -50,62 +33,20 @@ export default function Incidents(){
             'Selecione o tipo de ONG',
             '',
             [
-                {text: 'Todos', onPress: () => loadT()},
-                {text: 'Animais', onPress: () => loadA()},
-                {text: 'Direitos Humanos', onPress:() => loadD()},
-                {text: 'Meio Ambiente', onPress: () => loadM()},
+                {text: 'Todos', onPress: () => reload('t')},
+                {text: 'Animais', onPress: () => reload('a')},
+                {text: 'Direitos Humanos', onPress:() => reload('d')},
+                {text: 'Meio Ambiente', onPress: () => reload('m')},
             ],
-            { cancelable: false }
+            { cancelable: true}
         );
     }
 
-    async function loadT(){
-        setTipo('t')
+    async function reload(type){
+        setTipo(type);
         await api.get('casos',{
             headers:{
-                type: 't',
-            },
-            params: {page: 1}
-        }).then(resp => {
-            setCasos(resp.data);
-            setTotal(resp.headers['x-total-count']);
-            setPage(2);
-           })
-    }
-
-    async function loadA(){
-        setTipo('a')
-        await api.get('casos',{
-            headers:{
-                type: 'a',
-            },
-            params: {page: 1}
-        }).then(resp => {
-            setCasos(resp.data);
-            setTotal(resp.headers['x-total-count']);
-            setPage(2);
-           })
-    }
-
-    async function loadD(){
-        setTipo('d')
-        await api.get('casos',{
-            headers:{
-                type: 'd',
-            },
-            params: {page: 1}
-        }).then(resp => {
-            setCasos(resp.data);
-            setTotal(resp.headers['x-total-count']);
-            setPage(2);
-           })
-    }
-
-    async function loadM(){
-        setTipo('m')
-        await api.get('casos',{
-            headers:{
-                type: 'm',
+                type: type,
             },
             params: {page: 1}
         }).then(resp => {
